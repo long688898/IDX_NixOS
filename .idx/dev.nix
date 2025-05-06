@@ -2,40 +2,40 @@
 # 请参阅：https://firebase.google.com/docs/studio/customize-workspace
 { pkgs, ... }: {
   # 系统环境变量
-  env = {
-    # Sing-box 配置
-    ARGO_DOMAIN = "your-domain.example.com";
-    UUID = "de04add9-5c68-8bab-950c-08cd5320df18";
-    CDN = "your-cdn-domain.com";
-    NODE_NAME = "your-node-name";
-    VMESS_PORT = "";  # 端口范围 1000-65535
-    VLESS_PORT = "";  # 端口范围 1000-65535
+  env = { 
+    # Sing-box 配置
+    ARGO_DOMAIN = "idx.ab66.filegear-sg.me";
+    UUID = "5336130b-aacc-49b3-865a-5251042d58ab";
+    CDN = "ip.sb";
+    NODE_NAME = "idx";
+    VMESS_PORT = "60000";  # 端口范围 1000-65535
+    VLESS_PORT = "60001";  # 端口范围 1000-65535
 
-    # 节点信息的 Nginx 静态文件服务
-    NGINX_PORT = "";  # 端口范围 1000-65535
+    # 节点信息的 Nginx 静态文件服务
+    NGINX_PORT = "60010";  # 端口范围 1000-65535
 
-    # Argo Tunnel 配置
-    ARGO_TOKEN = "your-argo-token";
+    # Argo Tunnel 配置
+    ARGO_TOKEN = "eyJhIjoiZWU4NWQ5YmQwNTI0OThhNmIwNWY0N2NjZmQ1YjM1MzIiLCJ0IjoiZjU5OGY5MGUtMWQyZi00NWFmLTgzYWEtYjI2MjNhNzZmNjU0IiwicyI6Ill6WXdaamRqTjJFdE5qSTFNUzAwWmpsa0xUazBabU10T1RNNE9EY3laamMzTURFeCJ9";
 
-    # Nezha 监控配置
-    NEZHA_SERVER = "monitor.example.com";
-    NEZHA_PORT = "443";
-    NEZHA_KEY = "your-nezha-key";
-    NEZHA_TLS = "--tls";  # 不要可以清空值
+    # Nezha 监控配置
+    NEZHA_SERVER = "monitor.example.com";
+    NEZHA_PORT = "443";
+    NEZHA_KEY = "your-nezha-key";
+    NEZHA_TLS = "--tls";  # 不要可以清空值
 
-    # SSH 配置
-    SSH_PASSWORD = "your-secure-password";
+    # SSH 配置
+    SSH_PASSWORD = "aWYgY29tb";
 
-    # FRP 配置
-    FRP_SERVER_ADDR = "frp.example.com";
-    FRP_SERVER_PORT = "7000";
-    FRP_AUTH_TOKEN = "your-frp-token";
+    # FRP 配置
+    FRP_SERVER_ADDR = "92.112.23.112";
+    FRP_SERVER_PORT = "7000";
+    FRP_AUTH_TOKEN = "aaL9Af4TbAxbdp8k";
 
-    # 远程端口配置
-    DEBIAN_REMOTE_PORT = "6001";
-    UBUNTU_REMOTE_PORT = "6002";
-    CENTOS_REMOTE_PORT = "6003";
-    ALPINE_REMOTE_PORT = "6004";
+    # 远程端口配置
+    DEBIAN_REMOTE_PORT = "60021";
+    UBUNTU_REMOTE_PORT = "60022";
+    CENTOS_REMOTE_PORT = "60023";
+    ALPINE_REMOTE_PORT = "60024";
   };
 
   # 使用哪个 nixpkgs 频道
