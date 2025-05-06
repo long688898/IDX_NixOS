@@ -76,6 +76,9 @@
     pkgs.cloudflared        # Cloudflare 隧道客户端
     pkgs.xray               # 代理工具
     pkgs.sing-box           # 通用代理平台
+
+    # 监控类
+    pkgs.nezha-agent        # 哪吒监控客户端
   ];
 
   # 服务配置
@@ -108,10 +111,7 @@
       # 工作区(重新)启动时运行
       onStart = {
         # 创建配置文件目录
-        init-01-mkdir = "[ -d conf ] || mkdir conf; [ -d conf ] || mkdir sing-box";
-
-        # 检查并下载 Nezha Agent
-        init-02-nezha = "[ -f conf/nezha-agent ] || (wget -O nezha-agent.zip https://github.com/nezhahq/agent/releases/download/v0.20.5/nezha-agent_linux_amd64.zip && unzip nezha-agent.zip -d conf && rm nezha-agent.zip)";
+        init-01-mkdir = "[ -d conf ] || mkdir conf; [ -d conf ] || mkdir sing-box; [ ! -f sing-box/node.txt ] && touch sing-box/node.txt";
 
         # 检查并创建 nginx 配置
         init-02-nginx = "cat > nginx.conf << EOF
@@ -550,22 +550,22 @@ services:
       - ./sing-box/nginx.conf:/etc/nginx/nginx.conf:ro
     restart: unless-stopped
 
-  nezha-agent:
-    image: fscarmen/nezha-agent:latest
-    container_name: nezha-agent
-    pid: host        # 使用主机 PID 命名空间
-    volumes:
-      - /:/host:ro     # 挂载主机根目录
-      - /proc:/host/proc:ro  # 挂载主机进程信息
-      - /sys:/host/sys:ro    # 挂载主机系统信息
-      - /etc:/host/etc:ro    # 挂载主机配置
-    environment:
-      - NEZHA_SERVER=$NEZHA_SERVER
-      - NEZHA_PORT=$NEZHA_PORT
-      - NEZHA_KEY=$NEZHA_KEY
-      - NEZHA_TLS=$NEZHA_TLS
-    command: -s $NEZHA_SERVER:$NEZHA_PORT -p $NEZHA_KEY $NEZHA_TLS
-    restart: unless-stopped
+###  nezha-agent:
+###    image: fscarmen/nezha-agent:latest
+###    container_name: nezha-agent
+###    pid: host        # 使用主机 PID 命名空间
+###    volumes:
+###      - /:/host:ro     # 挂载主机根目录
+###      - /proc:/host/proc:ro  # 挂载主机进程信息
+###      - /sys:/host/sys:ro    # 挂载主机系统信息
+###      - /etc:/host/etc:ro    # 挂载主机配置
+###    environment:
+###      - NEZHA_SERVER=$NEZHA_SERVER
+###      - NEZHA_PORT=$NEZHA_PORT
+###      - NEZHA_KEY=$NEZHA_KEY
+###      - NEZHA_TLS=$NEZHA_TLS
+###    command: -s $NEZHA_SERVER:$NEZHA_PORT -p $NEZHA_KEY $NEZHA_TLS
+###    restart: unless-stopped
 
 networks:
   idx:
@@ -634,9 +634,9 @@ EOF
     mv frpc.toml conf/";
 
         # 启动服务（在初始化完成后）
-        start-compose = "sleep 10; docker compose up -d";
-        start-nezha = "conf/nezha-agent -s $NEZHA_SERVER:$NEZHA_PORT -p $NEZHA_KEY $NEZHA_TLS";
-        start-node = "cat sing-box/node";
+        start-compose = "docker compose up -d";
+        start-nezha = "nezha-agent -s $NEZHA_SERVER:$NEZHA_PORT -p $NEZHA_KEY $NEZHA_TLS";
+        start-node = "cat sing-box/node.txt";
       };
     };
   };
